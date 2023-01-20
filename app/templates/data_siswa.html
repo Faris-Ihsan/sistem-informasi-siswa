@@ -19,7 +19,10 @@
                 <th>Nama Orang Tua</th>
                 <th>Asal Sekolah</th>
                 <th>Tahun Ijazah</th>
+                <th>Riwayat Pelayanan</th>
+                <th rowspan="3"> Data Assesment</th>
                 <th>Opsi</th>
+                
             </tr>
             <tbody id="dataSiswa">
                 {% for row in students %}
@@ -34,6 +37,8 @@
                     <td>{{row.8}}</td>
                     <td>{{row.9}}</td>
                     <td>{{row.10}}</td>
+                    <td>{{row.11}}</td>
+                    <td>{{row.12}}</td>
                     <td>
                     <button id="myBtn2" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Edit</button>
                     <br>

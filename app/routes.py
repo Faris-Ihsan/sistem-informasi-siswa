@@ -4,7 +4,7 @@ from app import app
 from flask import Flask, render_template, request, flash, url_for, redirect
 
 # konfigurasi database
-conn = psycopg2.connect(host="localhost", database="sistem_informasi_siswa", user="postgres", password="123456")
+conn = psycopg2.connect(host="localhost", database="sistem_informasi_siswa", user="postgres", password="123kinoyku")
 cur = conn.cursor()
 
 @app.route('/')
@@ -12,6 +12,61 @@ def index():
 
     return render_template('index.html')
 
+
+@app.route('/pengajar')
+def pengajar():
+
+    return render_template('pengajar.html')
+
+@app.route('/snmptn')
+def snmptn():
+
+    return render_template('snmptn.html')
+
+@app.route('/AV')
+def AV():
+
+    return render_template('AV.html')
+
+@app.route('/BKP')
+def BKP():
+
+    return render_template('BKP.html')
+
+@app.route('/DKV')
+def DKV():
+
+    return render_template('DKV.html')
+
+@app.route('/DPIB')
+def DPIB():
+
+    return render_template('DPIB.html')
+
+@app.route('/TBSM')
+def TBSM():
+
+    return render_template('TBSM.html')
+
+@app.route('/TITL')
+def TITL():
+
+    return render_template('TITL.html')
+
+@app.route('/TKRO')
+def TKRO():
+
+    return render_template('TKRO.html')
+
+@app.route('/TP')
+def TP():
+
+    return render_template('TP.html')
+
+@app.route('/TPTU')
+def TPTU():
+
+    return render_template('TPTU.html')
 # Read
 @app.route('/data_siswa')
 def data_siswa():
