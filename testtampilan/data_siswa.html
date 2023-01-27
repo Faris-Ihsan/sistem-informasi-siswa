@@ -1,16 +1,19 @@
 {% extends 'base/base.html' %}
 
 {% block style %}
-<link href="{{url_for('static', filename = 'css/dataTables.bootstrap.min.css')}}" rel="stylesheet">
+<!-- <link href="{{url_for('static', filename = 'css/dataTables.bootstrap.min.css')}}" rel="stylesheet"> -->
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>Tabel Data Nominatif Siswa SMKN 1 Bendo Magetan</h1>
+        <!-- <form class="navbar-form navbar-left">
+            <input class="form-control" type="text" id="searchData" placeholder="Cari Data Siswa">
+        </form> -->
         <br>
         <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
-                <tr style="white-space: nowrap;">
+                <tr>
                     <th>Nomor Induk Siswa Nasional</th>
                     <th>Nomor Induk Siswa Sekolah</th>
                     <th>Nama</th>
@@ -22,8 +25,9 @@
                     <th>Asal Sekolah</th>
                     <th>Tahun Ijazah</th>
                     <th>Riwayat Pelayanan</th>
-                    <th>Data Assesment</th>
+                    <th rowspan="3"> Data Assesment</th>
                     <th>Opsi</th>
+                    
                 </tr>
             </thead>
             <tbody id="dataSiswa">
@@ -54,14 +58,12 @@
 {% endblock%}
 
 {% block scripts %}
-<script src="{{url_for('static', filename = 'js/jquery-3.5.1.js')}}"></script>
 <script src="{{url_for('static', filename = 'js/jquery.dataTables.min.js')}}"></script>
 <script src="{{url_for('static', filename = 'js/dataTables.bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/jquery-3.5.1.js')}}"></script>
 <script>
     $(document).ready(function () {
-        $('#example').DataTable({
-            scrollX: true,
-        });
+        $('#example').DataTable();
     });
 </script>
 {% endblock %}

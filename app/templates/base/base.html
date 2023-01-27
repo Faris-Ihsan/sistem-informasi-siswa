@@ -20,10 +20,13 @@
 
     <!-- Custom styles for this template -->
     <link href="{{url_for('static', filename = 'css/navbar-fixed-top.css')}}" rel="stylesheet">
-
+    
+    <link href="{{url_for('static', filename = 'css/custom-jumbotron.css')}}" rel="stylesheet">
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="{{url_for('static', filename = 'assets/js/ie-emulation-modes-warning.js')}}"></script>
+
+    {% block style %}{% endblock style %}
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -39,7 +42,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">Toggle naviga tion</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -51,7 +54,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Home</a></li>
-            <li><a href="/pengajar">Pengajar</a></li>
+            <li><a href="/pengajar">Guru BK</a></li>
             <li><a href="/snmptn">SNMPTN</a></li>
             <li><a href="/data_siswa">Data siswa</a></li>
             <li class="dropdown">
@@ -86,6 +89,7 @@
     <script src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{{url_for('static', filename = 'assets/js/ie10-viewport-bug-workaround.js')}}"></script>
+    {% block scripts %}{% endblock %}
     <script>
       $(document).ready(function() {
           $("#searchData").on("keyup", function() {

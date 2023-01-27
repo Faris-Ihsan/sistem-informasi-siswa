@@ -4,7 +4,7 @@ from app import app
 from flask import Flask, render_template, request, flash, url_for, redirect
 
 # konfigurasi database
-conn = psycopg2.connect(host="localhost", database="sistem_informasi_siswa", user="postgres", password="123kinoyku")
+conn = psycopg2.connect(host="localhost", database="sistem_informasi_siswa", user="postgres", password="123456")
 cur = conn.cursor()
 
 @app.route('/')
@@ -106,7 +106,7 @@ def update():
         id_data = request.form['id']
         nisn = request.form['nisn']
         niss = request.form['niss']
-        nama = request.form['nama']
+        nama = request.form['nama'] 
         tanggal_lahir = request.form['tanggal_lahir']
         tempat_lahir = request.form['tempat_lahir']
         alamat = request.form['alamat']
@@ -130,4 +130,11 @@ def delete(id_data):
     cur.execute("DELETE FROM data_siswa WHERE id=%s", (id_data,))
     conn.commit()
     return redirect(url_for('index'))
+
+
+
+@app.route('/test')
+def test():
+    datas = ['data1', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7', 'data8', 'data9', 'data10', 'data11', 'data12', 'data13']
+    return render_template('test.html', datas = datas)
 
