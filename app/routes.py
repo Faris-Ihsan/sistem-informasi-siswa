@@ -67,6 +67,7 @@ def TP():
 def TPTU():
 
     return render_template('TPTU.html')
+    
 # Read
 @app.route('/data_siswa')
 def data_siswa():
@@ -78,11 +79,10 @@ def data_siswa():
 
     return render_template('data_siswa.html', students = data)
 
-# Create
+# Create 
 @app.route('/insert', methods = ['POST'])
 def insert():
     if request.method == "POST":
-        flash("Data Inserted Sucessfully")
         nisn = request.form['nisn']
         niss = request.form['niss']
         nama = request.form['nama']
@@ -93,17 +93,19 @@ def insert():
         nama_orangtua = request.form['nama_orangtua']
         asal_sekolah = request.form['asal_sekolah']
         tahun_ijazah = request.form['tahun_ijazah']
-        cur.execute("INSERT INTO data_siswa (nisn, niss, nama, tanggal_lahir, tempat_lahir, alamat, jenis_kelamin, nama_orangtua, asal_sekolah, tahun_ijazah) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (nisn, niss, nama, tanggal_lahir, tempat_lahir, alamat, jenis_kelamin, nama_orangtua, asal_sekolah, tahun_ijazah))
+        riwayat_pelayanan = request.form['riwayat_pelayanan']
+        data_assesment = request.form['data_assesment']
+        a = [nisn, niss, nama, tanggal_lahir, tempat_lahir, alamat, jenis_kelamin, nama_orangtua, asal_sekolah, tahun_ijazah, riwayat_pelayanan, data_assesment]
+        print(a)
+        cur.execute("INSERT INTO data_siswa (nisn, niss, nama, tanggal_lahir, tempat_lahir, alamat, jenis_kelamin, nama_orangtua, asal_sekolah, tahun_ijazah, riwayat_pelayanan, data_assesment) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (nisn, niss, nama, tanggal_lahir, tempat_lahir, alamat, jenis_kelamin, nama_orangtua, asal_sekolah, tahun_ijazah, riwayat_pelayanan, data_assesment))
         conn.commit()
 
-        return redirect(url_for('index'))
-
+        return redirect(url_for('data_siswa'))
 
 # Update
-@app.route('/update', methods=['POST','GET'])
-def update():
+@app.route('/update/<id_data>', methods=['POST'])
+def update(id_data):
     if request.method == 'POST':
-        id_data = request.form['id']
         nisn = request.form['nisn']
         niss = request.form['niss']
         nama = request.form['nama'] 
@@ -114,24 +116,35 @@ def update():
         nama_orangtua = request.form['nama_orangtua']
         asal_sekolah = request.form['asal_sekolah']
         tahun_ijazah = request.form['tahun_ijazah']
+        riwayat_pelayanan = request.form['riwayat_pelayanan']
+        data_assesment = request.form['data_assesment']
         cur.execute("""UPDATE data_siswa 
                     SET nisn=%s, niss=%s, nama=%s, tanggal_lahir=%s, tempat_lahir=%s, alamat=%s,
-                    jenis_kelamin=%s, nama_orangtua=%s, asal_sekolah=%s, tahun_ijazah=%s 
+                    jenis_kelamin=%s, nama_orangtua=%s, asal_sekolah=%s, tahun_ijazah=%s, riwayat_pelayanan=%s, data_assesment=%s 
                     WHERE id=%s
                     """, (nisn,niss,nama,tanggal_lahir,tempat_lahir,alamat,jenis_kelamin,
-                    nama_orangtua,asal_sekolah,tahun_ijazah, id_data))
-        flash("Data Updated Successfully")
+                    nama_orangtua,asal_sekolah,tahun_ijazah,riwayat_pelayanan,data_assesment, id_data))
         conn.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('data_siswa'))
 
 @app.route('/delete/<id_data>', methods = ['GET'])
 def delete(id_data):
     flash("Record Has Been Deleted Successfully")
     cur.execute("DELETE FROM data_siswa WHERE id=%s", (id_data,))
     conn.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('data_siswa'))
 
+@app.route('/tambah_data')
+def tambah_data():
 
+    return render_template('tambah_data.html')
+
+@app.route('/edit_data/<id_data>', methods = ['POST', 'GET'])
+def edit_data(id_data):
+    cur.execute("SELECT * FROM data_siswa WHERE id=%s", (id_data, ))
+    data = cur.fetchall()
+    print(data)
+    return render_template('edit_data.html', datas = data[0])
 
 @app.route('/test')
 def test():
