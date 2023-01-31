@@ -1,0 +1,72 @@
+.bg-c {
+    background-color: white;
+}
+
+@font-face{
+    font-family: RubikBold;
+    src: url(Rubik-SemiBold.tff);
+}
+
+h2{
+    font-family: RubikBold;
+    color: #8d82c9;    
+}
+
+.c-border{
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    padding: 10px 10px 10px 10px;
+    border-image: 
+    linear-gradient(
+        to bottom, 
+        #ffc6ff, 
+        #a0c4ff
+    ) 100% 0 100% 0 / 3px 0 3px 0;
+}
+
+.c-onlytop-border{
+    border-style: solid;
+    border-color: black;
+    padding: 10px 10px 10px 10px;
+    border-image: 
+    linear-gradient(
+        to left,
+        #ffc6ff, 
+        #a0c4ff
+        ) 100% 0 100% 0 / 3px 0 3px 0;
+}
+
+@media (min-width: 992px) {
+    .c-border{
+        border-image: 
+        linear-gradient(
+            to left,
+            #ffc6ff, 
+            #a0c4ff
+            ) 0 0 0 100% / 0px 0 0px 3px;
+    }
+}
+
+
+.centered{
+    margin: auto; 
+    max-width: 700px;
+}
+
+.c-row-margin{
+    margin-top: 70px;
+}
+
+.c-col-margin{
+    margin-top: 70px;
+}
+
+@media (min-width: 992px) {
+    .c-col-margin{
+        margin-top: 100px;
+    }
+    .c-col-margin{
+        margin-top: 0px;
+    }
+}

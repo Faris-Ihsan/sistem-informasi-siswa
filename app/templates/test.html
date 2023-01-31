@@ -1,59 +1,69 @@
 {% extends 'base/base.html' %}
 
 {% block style %}
-<link href="{{url_for('static', filename = 'css/dataTables.bootstrap.min.css')}}" rel="stylesheet">
+<style>
+    .img-responsive {
+        display: block;
+        height: auto;
+        max-width: 100%;
+    }
+</style>
+
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Tabel Data Nominatif Siswa SMKN 1 Bendo Magetan</h1>
-        <br>
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Nomor Induk Siswa Nasional</th>
-                    <th>Nomor Induk Siswa Sekolah</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Tempat Lahir</th>
-                    <th>Alamat</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Nama Orang Tua</th>
-                    <th>Asal Sekolah</th>
-                    <th>Tahun Ijazah</th>
-                    <th>Riwayat Pelayanan</th>
-                    <th rowspan="3">Data Assesment</th>
-                    <th>Opsi</th>
-                </tr>
-            </thead>
-            <tbody>                
-                {% for row in datas %}
-                <tr>
-                    <td>row</td>
-                    <td>123</td>
-                    <td>123</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>-</td>
-                    <td>=</td>
-                    <td>=</td>
-                    <td>=</td>
-                    <td>=</td>
-                    <td>=</td>
-                    <td>=</td>
-                </tr>
-                {%endfor%}
-            </tbody>
-        </table>
+<div class="container-fluid">
+  <div class="bg"></div>
+    <div class="row">
+        <img src="{{ url_for('static', filename='img/bannerfix.png' ) }}" class="img-responsive" style="pointer-events: none;">
+    </div> 
+  <br><br>
+  <hr>
+  <div class="container">
+    <!-- Example row of columns -->
+    <div class="col-md-offset-2">
+      <div class="row">
+        <div class="col-md-10 text-center">
+          <h2>Tujuan</h2>
+          <p>Tujuan umum layanan bimbingan dan konseling adalah membantu peserta didik/konseli agar dapat mencapai kematangan dan kemandirian dalam kehidupannya serta menjalankan tugas-tugas perkembangannya yang mencakup aspek pribadi, sosial, belajar, karir secara utuh dan optimal. Tujuan khusus layanan bimbingan dan konseling adalah membantu konseli agar mampu: 
+            <ol class="text-left">
+              <li>Memahami dan menerima diri dan lingkungannya</li>
+              <li>Merencanakan kegiatan penyelesaian studi, perkembangan karir dan kehidupannya di masa yang akan datang</li>
+              <li>Mengembangkan potensinya seoptimal mungkin</li>
+              <li>Menyesuaikan diri dengan lingkungannya</li>
+              <li>Mengatasi hambatan atau kesulitan yang dihadapi dalam kehidupannya</li>
+              <li>Mengaktualiasikan dirinya  secara bertanggung jawab</li>
+            </ol>
+          </p>
+        </div>
+      </div>
     </div>
-{% endblock%}
 
-{% block scripts %}
-<script src="{{url_for('static', filename = 'js/jquery-3.5.1.js')}}"></script>
-<script src="{{url_for('static', filename = 'js/jquery.dataTables.min.js')}}"></script>
-<script src="{{url_for('static', filename = 'js/dataTables.bootstrap.min.js')}}"></script>
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
-</script>
-{% endblock %}
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <h2>Visi</h2>
+        <p>Terwujudnya kehidupan manusia yang mandiri  melalui pelayanan bantuan agar peserta didik/konseli berkembang secara optimal, cerdas,terampil,dan berkarakter positif.
+        </p>
+      </div>
+      <div class="col-md-6 text-center">
+        <h2>Misi</h2>
+        <p>Memberikan pelayanan bantuan agar peserta didik/konseli:
+          <ol class="text-left">
+            <li>Beriman Kepada Tuhan YME</li>
+            <li>Berbudi pekerti luhur </li>
+            <li>Berkembang secara optimal dengan memiliki berbagai kompetensi berkenaan dengan:
+              <ul>
+                <li>Pemahaman diri </li>
+                <li>Pemahaman lingkungan</li>
+                <li>Pengambilan keputusan dan pengarahan diri</li>
+                <li>Perencanaan masa depan</li>
+              </ul>
+            </li>
+            <li>Berkehidupan sehari-hari yang efektif, kreatif dan mandiri.</li>
+          </ol>
+        </p>
+      </div>
+    </div>
+    </div>
+  
+{% endblock%}
