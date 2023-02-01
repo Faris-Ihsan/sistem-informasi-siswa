@@ -12,6 +12,26 @@ def index():
 
     return render_template('index.html')
 
+@app.route('/login')
+def login():
+
+    return render_template('login.html')
+
+@app.route('/login_validation', methods=['POST'])
+def login_validation():
+    if request.method == 'POST':
+        id = request.form['id']
+        password = request.form['password']
+
+        uname_asli = 'syabrienapv'
+        pass_asli = '123456'
+
+        if id == uname_asli and password == pass_asli:
+            validation = 'True'
+        else:
+            validation = 'False'
+
+    return render_template('login.html', validation = validation)
 
 @app.route('/pengajar')
 def pengajar():
