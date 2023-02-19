@@ -2,6 +2,51 @@ import psycopg2
 
 from app import app
 from flask import Flask, render_template, request, flash, url_for, redirect
+from typing import Dict, Optional
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import (
+    LoginManager,
+    UserMixin,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
+
+login_manager = LoginManager(app)
+login_manager.init_app(app)
+
+users: Dict[str, "User"] = {}
+
+class User(UserMixin):
+    def __init__(self, id: str, username: str, email: str, password: str):
+        self.id = id
+        self.username = username
+        self.email = email
+        self.password = password
+    
+    @staticmethod
+    def get(user_id: str) -> Optional["User"]:
+        return users.get(user_id)
+
+    def __str__(self) -> str:
+        return f"<Id: {self.id}, Username: {self.username}, Email: {self.email}>"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+def user_data(id, username, email, password):
+    key = str(1)
+    users[key] = User(
+            id=1,
+            username= str(username),
+            email=str(email),
+            password=str(password),
+        )
+
+@login_manager.user_loader
+def load_user(user_id: str):
+    return User.get(user_id)
 
 # konfigurasi database
 conn = psycopg2.connect(host="localhost", database="sistem_informasi_siswa", user="postgres", password="123456")
@@ -12,26 +57,24 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login', methods = ['GET', 'POST']) # methods = ['GET', 'POST']
 def login():
-
-    return render_template('login.html')
-
-@app.route('/login_validation', methods=['POST'])
-def login_validation():
-    if request.method == 'POST':
-        id = request.form['id']
+    if request.method == "POST":
+        nisn = request.form['nisn']
         password = request.form['password']
-
-        uname_asli = 'syabrienapv'
-        pass_asli = '123456'
-
-        if id == uname_asli and password == pass_asli:
-            validation = 'True'
-        else:
-            validation = 'False'
-
-    return render_template('login.html', validation = validation)
+        cur.execute("SELECT * FROM user_login_data WHERE nisn=%s", (nisn, ))
+        data = cur.fetchone()
+        # print(data[0])
+        # password_hash = generate_password_hash(password)
+        try:
+            user_data(data[1], data[2], "email", data[3])
+        except:
+            return redirect(request.path)
+        user = User.get(str(data[1]))
+        if check_password_hash(data[3], password):
+            login_user(user)
+            return redirect(url_for("index"))
+    return render_template('login.html')
 
 @app.route('/pengajar')
 def pengajar():
@@ -170,4 +213,15 @@ def edit_data(id_data):
 def test():
     datas = ['data1', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7', 'data8', 'data9', 'data10', 'data11', 'data12', 'data13']
     return render_template('test.html', datas = datas)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("index"))
+
+@app.route("/settings")
+@login_required
+def settings():
+    return "<h1>Route protected</h1>"
 
