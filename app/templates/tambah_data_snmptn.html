@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Tambah Data Siswa</h1>
+    <br><br>
+    <form action="{{url_for('tambah_data_snmptn')}}" method="POST">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama Siswa</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="nama_siswa" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Kelas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="kelas" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Program Studi</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="program_studi" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Universitas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="universitas" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Guru Pembimbing</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="guru_pembimbing" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tahun Ajaran</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="tahun_ajaran" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Submit Data</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock%}

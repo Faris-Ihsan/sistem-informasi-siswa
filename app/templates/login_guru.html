@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+
+{% block style %}
+<link href="{{url_for('static', filename = 'css/signin.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <form action="/login_guru" method="POST" class="form-signin">
+        <h2 class="form-signin-heading">Halaman Login Guru</h2>
+        <label class="sr-only">No. HP</label>
+        <input  class="form-control" placeholder="No. HP" name="no_hp" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="password" required>
+        <!-- <div class="checkbox">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        </div> -->
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Masuk</button>
+    </form>
+{% endblock %}

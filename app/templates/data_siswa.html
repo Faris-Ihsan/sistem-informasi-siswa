@@ -14,16 +14,22 @@
                     <th>Nomor Induk Siswa Nasional</th>
                     <th>Nomor Induk Siswa Sekolah</th>
                     <th>Nama</th>
-                    <th>Tanggal Lahir</th>
+                    <th>Jenis Kelamin</th>                    
                     <th>Tempat Lahir</th>
+                    <th>Tanggal Lahir</th>
                     <th>Alamat</th>
-                    <th>Jenis Kelamin</th>
+                    <th>Desa</th>
+                    <th>Kecamatan</th>
+                    <th>Kabupaten</th>
                     <th>Nama Orang Tua</th>
                     <th>Asal Sekolah</th>
                     <th>Tahun Ijazah</th>
-                    <th>Riwayat Pelayanan</th>
-                    <th>Data Assesment</th>
+                    <th>Keterangan</th>
+                    <th>Kelas</th>
+                    <th>Jurusan</th>
+                    {% if current_user.role == '1' %}
                     <th>Opsi</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody id="dataSiswa">
@@ -41,16 +47,24 @@
                     <td>{{row.10}}</td>
                     <td>{{row.11}}</td>
                     <td>{{row.12}}</td>
+                    <td>{{row.13}}</td>
+                    <td>{{row.14}}</td>
+                    <td>{{row.15}}</td>
+                    <td>{{row.16}}</td>                    
+                    {% if current_user.role == '1' %}
                     <td>
                     <a href="/edit_data/{{ row.0 }}" class="btn btn-primary btn-xs">Edit</a>
                     <br>
                     <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
                     </td>
+                    {% endif %}
                 </tr>
                 {%endfor%}
             </tbody>
         </table>
+    {% if current_user.role == '1' %}
     <a href="/tambah_data" class="btn btn-primary">Tambah Data Siswa</a>
+    {% endif %}
     </div>
 {% endblock%}
 
