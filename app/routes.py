@@ -69,8 +69,6 @@ def login():
         cur.execute("SELECT user_login_data.id_user, user_login_data.id, user_login_data.nisn, user_login_data.password, data_siswa.nama FROM user_login_data INNER JOIN data_siswa ON user_login_data.nisn = data_siswa.nisn WHERE user_login_data.nisn = %s", (nisn, ))
         data = cur.fetchone()
         role = 0
-        # print(data[0])
-        # password_hash = generate_password_hash(password)
         try:
             user_data(data[1], data[2], data[3], data[4].title(), role)
         except:
@@ -88,7 +86,6 @@ def login_guru():
         password = request.form['password']
         cur.execute("SELECT * FROM guru_login_data WHERE no_hp = %s", (no_hp, ))
         data = cur.fetchone()
-        print(data[0], data[2], data[3], data[2].title(), data[4])
         password_hash = generate_password_hash(password)
         try:
             user_data(data[0], data[2], data[3], data[1].title(), data[4])
@@ -121,9 +118,6 @@ def profil():
         id = current_user.id
         cur.execute("SELECT * FROM data_siswa WHERE id = %s", (id, ))
         datas = cur.fetchone()
-        print(id)
-        print(datas)    
-        # cur.execute("SELECT * FROM data_siswa WHERE id=%s", (id_data, )")
     return render_template('profil.html', datas=datas)
 
 @app.route('/AV')
@@ -170,12 +164,39 @@ def TP():
 def TPTU():
 
     return render_template('TPTU.html')
-    
+
+
 # Read
-@app.route('/data_siswa')
+@app.route('/data_siswa', methods = ['GET', 'POST'])
 def data_siswa():
     cur.execute("SELECT * FROM data_siswa")
     data = cur.fetchall()
+    if request.method == 'POST':
+        try:
+            jurusan = request.form['jurusan']
+        except:
+            jurusan = None
+
+        try:
+            tingkat = request.form['tingkat']
+        except:
+            tingkat = None
+
+        if jurusan is not None and tingkat is not None :
+            cur.execute("SELECT * FROM data_siswa WHERE jurusan = %s AND tingkat = %s", (jurusan, tingkat,))
+            data = cur.fetchall()
+            return render_template('data_siswa.html', students = data)
+        elif tingkat is not None:
+            cur.execute("SELECT * FROM data_siswa WHERE tingkat = %s", (tingkat,))
+            data = cur.fetchall()
+            return render_template('data_siswa.html', students = data)
+        elif jurusan is not None:
+            cur.execute("SELECT * FROM data_siswa WHERE jurusan = %s", (jurusan,))
+            data = cur.fetchall()
+            return render_template('data_siswa.html', students = data)
+        else:
+            return render_template('data_siswa.html', students = data)
+        return render_template('data_siswa.html', students = data)
 
     return render_template('data_siswa.html', students = data)
 
@@ -199,8 +220,6 @@ def insert():
         keterangan = request.form['keterangan']
         kelas = request.form['kelas']
         jurusan = request.form['jurusan']
-        a = [nisn, niss, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, desa, kecamatan, kabupaten, nama_orangtua, asal_sekolah, tahun_ijazah, keterangan, kelas, jurusan]
-        print(a)
         cur.execute("INSERT INTO data_siswa (nisn, niss, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, desa, kecamatan, kabupaten, nama_orangtua, asal_sekolah, tahun_ijazah, keterangan, tingkat, jurusan) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (nisn, niss, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, desa, kecamatan, kabupaten, nama_orangtua, asal_sekolah, tahun_ijazah, keterangan, kelas, jurusan))
         conn.commit()
 
@@ -289,7 +308,13 @@ def tambah_data_snmptn():
 def edit_data(id_data):
     cur.execute("SELECT * FROM data_siswa WHERE id=%s", (id_data, ))
     data = cur.fetchall()
-    print(data)
+    return render_template('edit_data.html', datas = data[0])
+
+@app.route('/edit_profil', methods = ['POST', 'GET'])
+def edit_profil():
+    id_data = current_user.id
+    cur.execute("SELECT * FROM data_siswa WHERE id=%s", (id_data, ))
+    data = cur.fetchall()
     return render_template('edit_data.html', datas = data[0])
 
 @app.route('/edit_data_snmptn/<id_data>', methods = ['POST', 'GET'])
@@ -298,9 +323,11 @@ def edit_data_snmptn(id_data):
     data = cur.fetchall()
     return render_template('edit_data_snmptn.html', datas = data[0])
 
-@app.route('/test')
+@app.route('/test', methods=['POST', 'GET'])
 def test():
-
+    if request.method == "POST":
+        dkv = request.form['checkbox']
+        print(dkv)
     return render_template('test.html')
 
 @app.route("/logout")

@@ -66,6 +66,33 @@
     <a href="/tambah_data" class="btn btn-primary">Tambah Data Siswa</a>
     {% endif %}
     </div>
+    <form action="/data_siswa" method="POST">       
+        <input type="radio" name="jurusan" value="TITL">        
+        <label for="jurusan1">TITL</label><br>
+        <input type="radio" name="jurusan" value="TKRO">
+        <label for="jurusan2">TKRO</label><br>
+        <input type="radio" name="jurusan" value="TKP">
+        <label for="jurusan3">TKP</label><br>
+        <input type="radio" name="jurusan" value="DPIB">
+        <label for="jurusan4">DPIB</label><br>
+        <input type="radio" name="jurusan" value="TBSM">
+        <label for="jurusan5">TBSM</label><br>
+        <input type="radio" name="jurusan" value="AV">
+        <label for="jurusan6">AV</label><br>
+        <input type="radio" name="jurusan" value="DKV">
+        <label for="jurusan7">DKV</label><br>
+        <input type="radio" name="jurusan" value="TP">
+        <label for="jurusan8">TP</label><br>
+        <hr>
+        <input type="radio" name="tingkat" value="X">
+        <label for="tingkat1">X</label><br>
+        <input type="radio" name="tingkat" value="XI">
+        <label for="tingkat2">XI</label><br>
+        <input type="radio" name="tingkat" value="XII">
+        <label for="tingkat3">XII</label><br>        
+        <button type="submit" class="btn btn-primary">Reset Filter</button>
+        <button type="submit" class="btn btn-primary">Submit Data</button>
+    </form>
 {% endblock%}
 
 {% block scripts %}

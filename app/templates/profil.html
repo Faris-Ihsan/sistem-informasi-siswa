@@ -1,72 +1,106 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <table>
-        <tr>
-            <td>nisn</td>
-            <td>:</td>
-            <td>{{datas[1]}}</td>
-        </tr>
-        <tr>
-            <td>niss</td>
-            <td>:</td>
-            <td>{{datas[2]}}</td>
-        </tr>
-        <tr>
-            <td>nama</td>
-            <td>:</td>
-            <td>{{datas[3]}}</td>
-        </tr>
-        <tr>
-            <td>jenis_kelamin</td>
-            <td>:</td>
-            <td>{{datas[4]}}</td>
-        </tr>        
-        <tr>
-            <td>tempat_lahir</td>
-            <td>:</td>
-            <td>{{datas[5]}}</td>
-        </tr>
-        <tr>
-            <td>tanggal_lahir</td>
-            <td>:</td>
-            <td>{{datas[6]}}</td>
-        </tr>
-        <tr>
-            <td>alamat</td>
-            <td>:</td>
-            <td>{{datas[7]}}</td>
-        </tr>
-        <tr>
-            <td>desa</td>
-            <td>:</td>
-            <td>{{datas[8]}}</td>
-        </tr>
-        <tr>
-            <td>kecamatan</td>
-            <td>:</td>
-            <td>{{datas[9]}}</td>
-        </tr>
-        <tr>
-            <td>kabupaten</td>
-            <td>:</td>
-            <td>{{datas[10]}}</td>
-        </tr>
-        <tr>
-            <td>nama_orangtua</td>
-            <td>:</td>
-            <td>{{datas[11]}}</td>
-        </tr>
-        <tr>
-            <td>asal_sekolah</td>
-            <td>:</td>
-            <td>{{datas[12]}}</td>
-        </tr>
-        <tr>
-            <td>tahun_ijazah</td>
-            <td>:</td>
-            <td>{{datas[13]}}</td>
-        </tr>
-    </table>
-    <a href="/edit_data/{{ datas[0] }}">edit profil</a>
+<div class="container">
+    <h1>Profil</h1>
+    <hr>
+    <br>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Nomor Induk Siswa Nasional</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="nisn" value="{{ datas.1 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Nomor Induk Siswa Sekolah</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="niss" value="{{ datas.2 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Nama Lengkap</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="nama" value="{{ datas.3 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Jenis Kelamin</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="jenis_kelamin" value="{{ datas.4 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tempat Lahir</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="tempat_lahir" value="{{ datas.5 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tanggal Lahir</label>
+        <div class="col-sm-10">
+            <input type="date" readonly class="form-control" name="tanggal_lahir" value="{{ datas.6 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Alamat</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="alamat" value="{{ datas.7 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Desa</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="desa" value="{{ datas.8 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Kecamatan</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="kecamatan" value="{{ datas.9 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Kabupaten</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="kabupaten" value="{{ datas.10 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Nama Orangtua</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="nama_orangtua" value="{{ datas.11 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Asal Sekolah</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="asal_sekolah" value="{{ datas.12 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tahun Ijazah</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="tahun_ijazah" value="{{ datas.13 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Keterangan</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="keterangan" value="{{ datas.14 }}" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Kelas</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="kelas" value="{{ datas.15 }}" required>
+        </div>
+    </div>        
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Jurusan</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control" name="jurusan" value="{{ datas.16 }}" required>
+        </div>
+    </div>
+    <a href="/edit_profil"  class="btn btn-primary">Edit Profil</a>
+</div>
 {% endblock %}
