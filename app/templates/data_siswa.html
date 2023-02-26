@@ -2,97 +2,107 @@
 
 {% block style %}
 <link href="{{url_for('static', filename = 'css/dataTables.bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{url_for('static', filename = 'css/dashboard.css')}}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Tabel Data Nominatif Siswa SMKN 1 Bendo Magetan</h1>
-        <br>
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr style="white-space: nowrap;">
-                    <th>Nomor Induk Siswa Nasional</th>
-                    <th>Nomor Induk Siswa Sekolah</th>
-                    <th>Nama</th>
-                    <th>Jenis Kelamin</th>                    
-                    <th>Tempat Lahir</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Alamat</th>
-                    <th>Desa</th>
-                    <th>Kecamatan</th>
-                    <th>Kabupaten</th>
-                    <th>Nama Orang Tua</th>
-                    <th>Asal Sekolah</th>
-                    <th>Tahun Ijazah</th>
-                    <th>Keterangan</th>
-                    <th>Kelas</th>
-                    <th>Jurusan</th>
-                    {% if current_user.role == '1' %}
-                    <th>Opsi</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            <tbody id="dataSiswa">
-                {% for row in students %}
-                <tr>
-                    <td>{{row.1}}</td>
-                    <td>{{row.2}}</td>
-                    <td>{{row.3}}</td>
-                    <td>{{row.4}}</td>
-                    <td>{{row.5}}</td>
-                    <td>{{row.6}}</td>
-                    <td>{{row.7}}</td>
-                    <td>{{row.8}}</td>
-                    <td>{{row.9}}</td>
-                    <td>{{row.10}}</td>
-                    <td>{{row.11}}</td>
-                    <td>{{row.12}}</td>
-                    <td>{{row.13}}</td>
-                    <td>{{row.14}}</td>
-                    <td>{{row.15}}</td>
-                    <td>{{row.16}}</td>                    
-                    {% if current_user.role == '1' %}
-                    <td>
-                    <a href="/edit_data/{{ row.0 }}" class="btn btn-primary btn-xs">Edit</a>
-                    <br>
-                    <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
-                    </td>
-                    {% endif %}
-                </tr>
-                {%endfor%}
-            </tbody>
-        </table>
-    {% if current_user.role == '1' %}
-    <a href="/tambah_data" class="btn btn-primary">Tambah Data Siswa</a>
-    {% endif %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <form action="/data_siswa" method="POST">
+                    <h4>Filter By Jurusan</h4>       
+                    <input type="radio" name="jurusan" value="TITL">        
+                    <label for="jurusan1">TITL</label><br>
+                    <input type="radio" name="jurusan" value="TKRO">
+                    <label for="jurusan2">TKRO</label><br>
+                    <input type="radio" name="jurusan" value="TKP">
+                    <label for="jurusan3">TKP</label><br>
+                    <input type="radio" name="jurusan" value="DPIB">
+                    <label for="jurusan4">DPIB</label><br>
+                    <input type="radio" name="jurusan" value="TBSM">
+                    <label for="jurusan5">TBSM</label><br>
+                    <input type="radio" name="jurusan" value="AV">
+                    <label for="jurusan6">AV</label><br>
+                    <input type="radio" name="jurusan" value="DKV">
+                    <label for="jurusan7">DKV</label><br>
+                    <input type="radio" name="jurusan" value="TP">
+                    <label for="jurusan8">TP</label><br>                    
+                    <input type="radio" name="jurusan" value="TPTU">
+                    <label for="jurusan9">TPTU</label><br>
+                    <hr>
+                    <h4>Filter By Kelas</h4>
+                    <input type="radio" name="tingkat" value="X">
+                    <label for="tingkat1">X</label><br>
+                    <input type="radio" name="tingkat" value="XI">
+                    <label for="tingkat2">XI</label><br>
+                    <input type="radio" name="tingkat" value="XII">
+                    <label for="tingkat3">XII</label><br>
+                    <button type="submit" class="btn btn-primary">Filter Data</button>
+                </form>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1>Tabel Data Nominatif Siswa SMKN 1 Bendo Magetan</h1>
+                <br>
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr style="white-space: nowrap;">
+                            <th>Nomor Induk Siswa Nasional</th>
+                            <th>Nomor Induk Siswa Sekolah</th>
+                            <th>Nama</th>
+                            <th>Jenis Kelamin</th>                    
+                            <th>Tempat Lahir</th>
+                            <th>Tanggal Lahir</th>
+                            <th>Alamat</th>
+                            <th>Desa</th>
+                            <th>Kecamatan</th>
+                            <th>Kabupaten</th>
+                            <th>Nama Orang Tua</th>
+                            <th>Asal Sekolah</th>
+                            <th>Tahun Ijazah</th>
+                            <th>Keterangan</th>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                            {% if current_user.role == '1' %}
+                            <th>Opsi</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody id="dataSiswa">
+                        {% for row in students %}
+                        <tr>
+                            <td>{{row.1}}</td>
+                            <td>{{row.2}}</td>
+                            <td>{{row.3}}</td>
+                            <td>{{row.4}}</td>
+                            <td>{{row.5}}</td>
+                            <td>{{row.6}}</td>
+                            <td>{{row.7}}</td>
+                            <td>{{row.8}}</td>
+                            <td>{{row.9}}</td>
+                            <td>{{row.10}}</td>
+                            <td>{{row.11}}</td>
+                            <td>{{row.12}}</td>
+                            <td>{{row.13}}</td>
+                            <td>{{row.14}}</td>
+                            <td>{{row.15}}</td>
+                            <td>{{row.16}}</td>                    
+                            {% if current_user.role == '1' %}
+                            <td>
+                            <a href="/edit_data/{{ row.0 }}" class="btn btn-primary btn-xs">Edit</a>
+                            <br>
+                            <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+                {% if current_user.role == '1' %}
+                <a href="/tambah_data" class="btn btn-primary">Tambah Data Siswa</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    <form action="/data_siswa" method="POST">       
-        <input type="radio" name="jurusan" value="TITL">        
-        <label for="jurusan1">TITL</label><br>
-        <input type="radio" name="jurusan" value="TKRO">
-        <label for="jurusan2">TKRO</label><br>
-        <input type="radio" name="jurusan" value="TKP">
-        <label for="jurusan3">TKP</label><br>
-        <input type="radio" name="jurusan" value="DPIB">
-        <label for="jurusan4">DPIB</label><br>
-        <input type="radio" name="jurusan" value="TBSM">
-        <label for="jurusan5">TBSM</label><br>
-        <input type="radio" name="jurusan" value="AV">
-        <label for="jurusan6">AV</label><br>
-        <input type="radio" name="jurusan" value="DKV">
-        <label for="jurusan7">DKV</label><br>
-        <input type="radio" name="jurusan" value="TP">
-        <label for="jurusan8">TP</label><br>
-        <hr>
-        <input type="radio" name="tingkat" value="X">
-        <label for="tingkat1">X</label><br>
-        <input type="radio" name="tingkat" value="XI">
-        <label for="tingkat2">XI</label><br>
-        <input type="radio" name="tingkat" value="XII">
-        <label for="tingkat3">XII</label><br>        
-        <button type="submit" class="btn btn-primary">Reset Filter</button>
-        <button type="submit" class="btn btn-primary">Submit Data</button>
-    </form>
 {% endblock%}
 
 {% block scripts %}

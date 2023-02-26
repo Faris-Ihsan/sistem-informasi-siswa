@@ -120,53 +120,6 @@ def profil():
         datas = cur.fetchone()
     return render_template('profil.html', datas=datas)
 
-@app.route('/AV')
-def AV():
-
-    return render_template('AV.html')
-
-@app.route('/BKP')
-def BKP():
-
-    return render_template('BKP.html')
-
-@app.route('/DKV')
-def DKV():
-
-    return render_template('DKV.html')
-
-@app.route('/DPIB')
-def DPIB():
-
-    return render_template('DPIB.html')
-
-@app.route('/TBSM')
-def TBSM():
-
-    return render_template('TBSM.html')
-
-@app.route('/TITL')
-def TITL():
-
-    return render_template('TITL.html')
-
-@app.route('/TKRO')
-def TKRO():
-
-    return render_template('TKRO.html')
-
-@app.route('/TP')
-def TP():
-
-    return render_template('TP.html')
-
-@app.route('/TPTU')
-def TPTU():
-
-    return render_template('TPTU.html')
-
-
-# Read
 @app.route('/data_siswa', methods = ['GET', 'POST'])
 def data_siswa():
     cur.execute("SELECT * FROM data_siswa")
@@ -200,7 +153,6 @@ def data_siswa():
 
     return render_template('data_siswa.html', students = data)
 
-# Create 
 @app.route('/insert', methods = ['POST'])
 def insert():
     if request.method == "POST":
@@ -225,7 +177,6 @@ def insert():
 
         return redirect(url_for('data_siswa'))
 
-# Update
 @app.route('/update/<id_data>', methods=['POST'])
 def update(id_data):
     if request.method == 'POST':
