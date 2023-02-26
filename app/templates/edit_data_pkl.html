@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit Data PKL</h1>
+    <br><br>
+    <form action="/update_pkl/{{ datas.0 }}" method="POST">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama Siswa</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="nama_siswa" value="{{datas.1}}" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama Dudi</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="nama_dudi" value="{{datas.2}}" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Alamat Dudi</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="alamat_dudi" value="{{datas.3}}" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Lamanya</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="lamanya" value="{{datas.4}}" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Predikat</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="predikat" value="{{datas.5}}" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Keterangan</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="keterangan" value="{{datas.6}}" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Kelas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="kelas" value="{{datas.7}}" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Wali Kelas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="wali_kelas" value="{{datas.8}}" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pembimbing</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="pembimbing" value="{{datas.9}}" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Submit Data</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock%}

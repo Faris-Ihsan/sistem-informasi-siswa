@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+
+{% block style %}
+<link href="{{url_for('static', filename = 'css/dataTables.bootstrap.min.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Data PKL dan Nilai</h1>
+        <br>
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr style="white-space: nowrap;">
+                    <th>Nama Siswa</th>
+                    <th>Nama Dudi</th>
+                    <th>Alamat Dudi</th>
+                    <th>Lamanya</th>                    
+                    <th>Predikat</th>
+                    <th>Keterangan</th>                    
+                    <th>Kelas</th>
+                    <th>Wali Kelas</th>
+                    <th>Pembimbing</th>
+                    {% if current_user.role == '1' %}
+                    <th>Opsi</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody id="dataSiswa">
+                {% for row in students %}
+                <tr>
+                    <td>{{row.1}}</td>
+                    <td>{{row.2}}</td>
+                    <td>{{row.3}}</td>
+                    <td>{{row.4}}</td>
+                    <td>{{row.5}}</td>
+                    <td>{{row.6}}</td>
+                    <td>{{row.7}}</td>
+                    <td>{{row.8}}</td>
+                    <td>{{row.9}}</td>                  
+                    {% if current_user.role == '1' %}
+                    <td>
+                    <a href="/edit_data_pkl/{{ row.0 }}" class="btn btn-primary btn-xs">Edit</a>
+                    <br>
+                    <a href="/delete_pkl/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    {% if current_user.role == '1' %}
+    <a href="/tambah_data_pkl" class="btn btn-primary">Tambah Data PKL</a>
+    {% endif %}
+    </div>
+{% endblock%}
+
+{% block scripts %}
+<script src="{{url_for('static', filename = 'js/jquery-3.5.1.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/jquery.dataTables.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/dataTables.bootstrap.min.js')}}"></script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            scrollX: true,
+        });
+    });
+</script>
+{% endblock %}

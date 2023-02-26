@@ -109,6 +109,13 @@ def snmptn():
 
     return render_template('snmptn.html', students = data)
 
+@app.route('/data_pkl')
+def data_pkl():
+    cur.execute("SELECT * FROM data_pkl_dan_nilai")
+    data = cur.fetchall()
+
+    return render_template('data_pkl.html', students = data)
+
 @app.route('/profil')
 @login_required
 def profil():
@@ -221,6 +228,26 @@ def update_snmptn(id_data):
         conn.commit()
         return redirect(url_for('snmptn'))
 
+@app.route('/update_pkl/<id_data>', methods=['POST'])
+def update_pkl(id_data):
+    if request.method == 'POST':
+        id_data = id_data
+        nama_siswa = request.form['nama_siswa']
+        nama_dudi = request.form['nama_dudi']
+        alamat_dudi = request.form['alamat_dudi']        
+        lamanya = request.form['lamanya']
+        predikat = request.form['predikat']
+        keterangan = request.form['keterangan']
+        kelas = request.form['kelas']
+        wali_kelas = request.form['wali_kelas']
+        pembimbing = request.form['pembimbing']
+        cur.execute("""UPDATE data_pkl_dan_nilai 
+                    SET nama_siswa=%s, nama_dudi=%s, alamat_dudi=%s, lamanya=%s, predikat=%s, keterangan=%s, kelas=%s, wali_kelas=%s, pembimbing=%s 
+                    WHERE id_pkl_dan_nilai=%s
+                    """, (nama_siswa, nama_dudi, alamat_dudi, lamanya, predikat, keterangan, kelas, wali_kelas, pembimbing, id_data,))
+        conn.commit()
+        return redirect(url_for('data_pkl'))
+
 @app.route('/delete/<id_data>', methods = ['GET'])
 def delete(id_data):
     flash("Record Has Been Deleted Successfully")
@@ -234,6 +261,13 @@ def delete_snmptn(id_data):
     cur.execute("DELETE FROM tabel_snmptn WHERE id_snmptn=%s", (id_data,))
     conn.commit()
     return redirect(url_for('snmptn'))
+
+@app.route('/delete_pkl/<id_data>', methods = ['GET'])
+def delete_pkl(id_data):
+    flash("Record Has Been Deleted Successfully")
+    cur.execute("DELETE FROM data_pkl_dan_nilai WHERE id_pkl_dan_nilai=%s", (id_data,))
+    conn.commit()
+    return redirect(url_for('data_pkl'))
 
 @app.route('/tambah_data')
 def tambah_data():
@@ -255,6 +289,24 @@ def tambah_data_snmptn():
 
     return render_template('tambah_data_snmptn.html')
 
+@app.route('/tambah_data_pkl', methods= ['POST', 'GET'])
+def tambah_data_pkl():
+    if request.method == "POST":
+        nama_siswa = request.form['nama_siswa']
+        nama_dudi = request.form['nama_dudi']
+        alamat_dudi = request.form['alamat_dudi']        
+        lamanya = request.form['lamanya']
+        predikat = request.form['predikat']
+        keterangan = request.form['keterangan']
+        kelas = request.form['kelas']
+        wali_kelas = request.form['wali_kelas']
+        pembimbing = request.form['pembimbing']
+        cur.execute("INSERT INTO data_pkl_dan_nilai (nama_siswa, nama_dudi, alamat_dudi, lamanya, predikat, keterangan, kelas, wali_kelas, pembimbing) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (nama_siswa, nama_dudi, alamat_dudi, lamanya, predikat, keterangan, kelas, wali_kelas, pembimbing))
+        conn.commit()
+        return redirect(url_for('data_pkl'))
+
+    return render_template('tambah_data_pkl.html')
+
 @app.route('/edit_data/<id_data>', methods = ['POST', 'GET'])
 def edit_data(id_data):
     cur.execute("SELECT * FROM data_siswa WHERE id=%s", (id_data, ))
@@ -273,6 +325,12 @@ def edit_data_snmptn(id_data):
     cur.execute("SELECT * FROM tabel_snmptn WHERE id_snmptn=%s", (id_data, ))
     data = cur.fetchall()
     return render_template('edit_data_snmptn.html', datas = data[0])
+
+@app.route('/edit_data_pkl/<id_data>', methods = ['POST', 'GET'])
+def edit_data_pkl(id_data):
+    cur.execute("SELECT * FROM data_pkl_dan_nilai WHERE id_pkl_dan_nilai=%s", (id_data, ))
+    data = cur.fetchall()
+    return render_template('edit_data_pkl.html', datas = data[0])
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():

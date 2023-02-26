@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Tambah Data Siswa</h1>
+    <br><br>
+    <form action="{{url_for('tambah_data_pkl')}}" method="POST">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama Siswa</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="nama_siswa" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama Dudi</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="nama_dudi" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Alamat Dudi</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="alamat_dudi" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Lamanya</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="lamanya" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Predikat</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="predikat" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Keterangan</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="keterangan" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Kelas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="kelas" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Wali Kelas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="wali_kelas" required>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Pembimbing</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="pembimbing" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Submit Data</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock%}
