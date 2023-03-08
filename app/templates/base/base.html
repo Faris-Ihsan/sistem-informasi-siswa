@@ -58,6 +58,7 @@
             <li><a href="/pengajar">Guru BK</a></li>
             <li><a href="/snmptn">SNMPTN</a></li>
             <li><a href="/data_siswa">Data siswa</a></li>
+            <li><a href="/data_pkl">Data PKL</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -70,7 +71,8 @@
               {% endif %}
               <ul class="dropdown-menu">
                 <!--<li><a href="/login">Login</a></li>-->
-                {% if current_user.role == '1' %}
+                {% if current_user.role == '1' %}                                
+                <li><a href="/profil_guru">Profil</a></li>
                 {% else %}                
                 <li><a href="/profil">Profil</a></li>
                 {% endif %}                

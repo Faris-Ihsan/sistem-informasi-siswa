@@ -10,35 +10,36 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <form action="/data_siswa" method="POST">
-                    <h4>Filter By Jurusan</h4>       
-                    <input type="radio" name="jurusan" value="TITL">        
+                    <h4>Filter By Jurusan</h4>                           
+                    <input type="radio" name="jurusan" value="TITL" {{ 'checked' if 'TITL' in jurusan}}>        
                     <label for="jurusan1">TITL</label><br>
-                    <input type="radio" name="jurusan" value="TKRO">
+                    <input type="radio" name="jurusan" value="TKRO" {{ 'checked' if 'TKRO' in jurusan}}>
                     <label for="jurusan2">TKRO</label><br>
-                    <input type="radio" name="jurusan" value="TKP">
-                    <label for="jurusan3">TKP</label><br>
-                    <input type="radio" name="jurusan" value="DPIB">
+                    <input type="radio" name="jurusan" value="BKP" {{ 'checked' if 'BKP' in jurusan}}>
+                    <label for="jurusan3">BKP</label><br>
+                    <input type="radio" name="jurusan" value="DPIB" {{ 'checked' if 'DPIB' in jurusan}}>
                     <label for="jurusan4">DPIB</label><br>
-                    <input type="radio" name="jurusan" value="TBSM">
+                    <input type="radio" name="jurusan" value="TBSM" {{ 'checked' if 'TBSM' in jurusan}}>
                     <label for="jurusan5">TBSM</label><br>
-                    <input type="radio" name="jurusan" value="AV">
+                    <input type="radio" name="jurusan" value="AV" {{ 'checked' if 'AV' in jurusan}}>
                     <label for="jurusan6">AV</label><br>
-                    <input type="radio" name="jurusan" value="DKV">
+                    <input type="radio" name="jurusan" value="DKV" {{ 'checked' if 'DKV' in jurusan}}>
                     <label for="jurusan7">DKV</label><br>
-                    <input type="radio" name="jurusan" value="TP">
+                    <input type="radio" name="jurusan" value="TP" {{ 'checked' if 'TP' in jurusan}}>
                     <label for="jurusan8">TP</label><br>                    
-                    <input type="radio" name="jurusan" value="TPTU">
+                    <input type="radio" name="jurusan" value="TPTU" {{ 'checked' if 'TPTU' in jurusan}}>
                     <label for="jurusan9">TPTU</label><br>
                     <hr>
-                    <h4>Filter By Kelas</h4>
-                    <input type="radio" name="tingkat" value="X">
+                    <h4>Filter By Kelas</h4>                                       
+                    <input type="radio" name="tingkat" value="X" {{ 'checked' if 'X' in tingkat}}>
                     <label for="tingkat1">X</label><br>
-                    <input type="radio" name="tingkat" value="XI">
+                    <input type="radio" name="tingkat" value="XI" {{ 'checked' if 'XI' in tingkat}}>
                     <label for="tingkat2">XI</label><br>
-                    <input type="radio" name="tingkat" value="XII">
+                    <input type="radio" name="tingkat" value="XII" {{ 'checked' if 'XII' in tingkat}}>
                     <label for="tingkat3">XII</label><br>
                     <button type="submit" class="btn btn-primary">Filter Data</button>
-                </form>
+                    <a href="/data_siswa" class="btn btn-primary">Semua Data</a>
+                </form>                                    
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1>Tabel Data Nominatif Siswa SMKN 1 Bendo Magetan</h1>
@@ -90,7 +91,7 @@
                             <td>
                             <a href="/edit_data/{{ row.0 }}" class="btn btn-primary btn-xs">Edit</a>
                             <br>
-                            <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+                            <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Anda yakin ingin menghapus data?, Jika data dihapus maka akun siswa juga akan terhapus')">Delete</a>
                             </td>
                             {% endif %}
                         </tr>

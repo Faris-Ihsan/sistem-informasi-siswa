@@ -51,22 +51,36 @@ def user_data(id, username, password, nama, role):
 def load_user(user_id: str):
     return User.get(user_id)
 
+def create_akun_siswa(nisn):
+    cur.execute("SELECT * FROM data_siswa WHERE nisn = %s", (nisn,))
+    data = cur.fetchone()
+    default_pwd = 'kanebsanihbos'
+    password_hash = generate_password_hash(default_pwd)
+    id = data[0]
+    cur.execute("INSERT INTO user_login_data (id, password) VALUES (%s, %s)", (id, password_hash))
+    conn.commit()
+
 # konfigurasi database
 conn = psycopg2.connect(host="localhost", database="sistem_informasi_siswa", user="postgres", password="123456")
 cur = conn.cursor()
 
+# Index
 @app.route('/')
+@login_required
 def index():
     if current_user.is_authenticated:
         username = current_user.nama
     return render_template('index.html')
 
+# Login Siswa dan Guru
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
     if request.method == "POST":
         nisn = request.form['nisn']
         password = request.form['password']
-        cur.execute("SELECT user_login_data.id_user, user_login_data.id, user_login_data.nisn, user_login_data.password, data_siswa.nama FROM user_login_data INNER JOIN data_siswa ON user_login_data.nisn = data_siswa.nisn WHERE user_login_data.nisn = %s", (nisn, ))
+        cur.execute("SELECT user_login_data.id_user, user_login_data.id, data_siswa.nisn, user_login_data.password, data_siswa.nama FROM user_login_data INNER JOIN data_siswa ON user_login_data.id = data_siswa.id WHERE data_siswa.nisn = %s", (nisn, ))
         data = cur.fetchone()
         role = 0
         try:
@@ -80,42 +94,58 @@ def login():
     return render_template('login.html')
 
 @app.route('/login_guru', methods = ['GET', 'POST'])
-def login_guru():
+def login_guru():    
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
     if request.method == "POST":
         no_hp = request.form['no_hp']
         password = request.form['password']
-        cur.execute("SELECT * FROM guru_login_data WHERE no_hp = %s", (no_hp, ))
+        cur.execute("SELECT guru_login_data.id_login_guru, guru_login_data.id_guru, tabel_guru.no_hp, guru_login_data.password, tabel_guru.nama, guru_login_data.role FROM guru_login_data INNER JOIN tabel_guru ON guru_login_data.id_guru = tabel_guru.id_guru WHERE tabel_guru.no_hp = %s", (no_hp, ))
         data = cur.fetchone()
         password_hash = generate_password_hash(password)
         try:
-            user_data(data[0], data[2], data[3], data[1].title(), data[4])
+            user_data(data[1], data[2], data[3], data[4], data[5])
         except:
             return redirect(request.path)
-        user = User.get(str(data[0]))
+        user = User.get(str(data[1]))
         if check_password_hash(data[3], password):
             login_user(user)
             return redirect(url_for("index"))
     return render_template('login_guru.html')
 
+# Profil Guru BK
 @app.route('/pengajar')
+@login_required
 def pengajar():
+    cur.execute("SELECT * FROM tabel_guru ORDER BY id_guru")
+    datas = cur.fetchall()    
+    cur.execute("SELECT * FROM bimbingan_kelas_guru ORDER BY id_bimbingan_kelas_guru")
+    bimbingan_kelas_guru_datas = cur.fetchall()
+    cur.execute("SELECT * FROM riwayat_prestasi_guru ORDER BY id_riwayat_prestasi")
+    riwayat_prestasi_guru_datas = cur.fetchall()    
+    cur.execute("SELECT * FROM riwayat_mengajar_guru ORDER BY id_riwayat_mengajar")
+    riwayat_mengajar_guru_datas = cur.fetchall()
+    
+    return render_template('pengajar.html', datas=datas, bimbingan_kelas_guru_datas=bimbingan_kelas_guru_datas, riwayat_prestasi_guru_datas=riwayat_prestasi_guru_datas, riwayat_mengajar_guru_datas=riwayat_mengajar_guru_datas)
 
-    return render_template('pengajar.html')
-
+# Data SNMPTN
 @app.route('/snmptn')
+@login_required
 def snmptn():
     cur.execute("SELECT * FROM tabel_snmptn")
     data = cur.fetchall()
 
     return render_template('snmptn.html', students = data)
 
+# Data PKL
 @app.route('/data_pkl')
+@login_required
 def data_pkl():
     cur.execute("SELECT * FROM data_pkl_dan_nilai")
     data = cur.fetchall()
-
     return render_template('data_pkl.html', students = data)
 
+# Profil Siswa dan Guru
 @app.route('/profil')
 @login_required
 def profil():
@@ -127,7 +157,25 @@ def profil():
         datas = cur.fetchone()
     return render_template('profil.html', datas=datas)
 
+@app.route('/profil_guru')
+@login_required
+def profil_guru():
+    if current_user.role == '1':
+        id = current_user.id
+        cur.execute("SELECT * FROM tabel_guru WHERE id_guru = %s", (id, ))
+        datas = cur.fetchone()
+        cur.execute("SELECT * FROM riwayat_mengajar_guru WHERE id_guru = %s", (id, ))
+        riwayat_mengajar_datas = cur.fetchall()        
+        cur.execute("SELECT * FROM riwayat_prestasi_guru WHERE id_guru = %s", (id, ))
+        riwayat_prestasi_datas = cur.fetchall()
+        cur.execute("SELECT * FROM bimbingan_kelas_guru WHERE id_guru = %s", (id, ))
+        bimbingan_kelas_datas = cur.fetchall()
+        return render_template('profil_guru.html', datas=datas, riwayat_mengajar_datas=riwayat_mengajar_datas, riwayat_prestasi_datas=riwayat_prestasi_datas, bimbingan_kelas_datas=bimbingan_kelas_datas)
+    else:
+        return redirect(url_for("index"))
+
 @app.route('/data_siswa', methods = ['GET', 'POST'])
+@login_required
 def data_siswa():
     cur.execute("SELECT * FROM data_siswa")
     data = cur.fetchall()
@@ -145,15 +193,15 @@ def data_siswa():
         if jurusan is not None and tingkat is not None :
             cur.execute("SELECT * FROM data_siswa WHERE jurusan = %s AND tingkat = %s", (jurusan, tingkat,))
             data = cur.fetchall()
-            return render_template('data_siswa.html', students = data)
+            return render_template('data_siswa.html', students = data, jurusan = jurusan, tingkat = tingkat)
         elif tingkat is not None:
             cur.execute("SELECT * FROM data_siswa WHERE tingkat = %s", (tingkat,))
             data = cur.fetchall()
-            return render_template('data_siswa.html', students = data)
+            return render_template('data_siswa.html', students = data, tingkat = tingkat)
         elif jurusan is not None:
             cur.execute("SELECT * FROM data_siswa WHERE jurusan = %s", (jurusan,))
             data = cur.fetchall()
-            return render_template('data_siswa.html', students = data)
+            return render_template('data_siswa.html', students = data, jurusan = jurusan)
         else:
             return render_template('data_siswa.html', students = data)
         return render_template('data_siswa.html', students = data)
@@ -161,30 +209,37 @@ def data_siswa():
     return render_template('data_siswa.html', students = data)
 
 @app.route('/insert', methods = ['POST'])
+@login_required
 def insert():
-    if request.method == "POST":
-        nisn = request.form['nisn']
-        niss = request.form['niss']
-        nama = request.form['nama']        
-        jenis_kelamin = request.form['jenis_kelamin']
-        tempat_lahir = request.form['tempat_lahir']
-        tanggal_lahir = request.form['tanggal_lahir']
-        alamat = request.form['alamat']
-        desa = request.form['desa']
-        kecamatan = request.form['kecamatan']
-        kabupaten = request.form['kabupaten']
-        nama_orangtua = request.form['nama_orangtua']
-        asal_sekolah = request.form['asal_sekolah']
-        tahun_ijazah = request.form['tahun_ijazah']
-        keterangan = request.form['keterangan']
-        kelas = request.form['kelas']
-        jurusan = request.form['jurusan']
-        cur.execute("INSERT INTO data_siswa (nisn, niss, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, desa, kecamatan, kabupaten, nama_orangtua, asal_sekolah, tahun_ijazah, keterangan, tingkat, jurusan) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (nisn, niss, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, desa, kecamatan, kabupaten, nama_orangtua, asal_sekolah, tahun_ijazah, keterangan, kelas, jurusan))
-        conn.commit()
-
+    try:
+        if request.method == "POST":
+            nisn = request.form['nisn']
+            niss = request.form['niss']
+            nama = request.form['nama']        
+            jenis_kelamin = request.form['jenis_kelamin']
+            tempat_lahir = request.form['tempat_lahir']
+            tanggal_lahir = request.form['tanggal_lahir']
+            alamat = request.form['alamat']
+            desa = request.form['desa']
+            kecamatan = request.form['kecamatan']
+            kabupaten = request.form['kabupaten']
+            nama_orangtua = request.form['nama_orangtua']
+            asal_sekolah = request.form['asal_sekolah']
+            tahun_ijazah = request.form['tahun_ijazah']
+            keterangan = request.form['keterangan']
+            kelas = request.form['kelas']
+            jurusan = request.form['jurusan']
+            cur.execute("INSERT INTO data_siswa (nisn, niss, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, desa, kecamatan, kabupaten, nama_orangtua, asal_sekolah, tahun_ijazah, keterangan, tingkat, jurusan) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (nisn, niss, nama, jenis_kelamin, tempat_lahir, tanggal_lahir, alamat, desa, kecamatan, kabupaten, nama_orangtua, asal_sekolah, tahun_ijazah, keterangan, kelas, jurusan))
+            conn.commit()
+            create_akun_siswa(nisn)
+            return redirect(url_for('data_siswa'))
+    except:
+        conn.rollback()
         return redirect(url_for('data_siswa'))
+    
 
 @app.route('/update/<id_data>', methods=['POST'])
+@login_required
 def update(id_data):
     if request.method == 'POST':
         nisn = request.form['nisn']
@@ -212,6 +267,7 @@ def update(id_data):
         return redirect(url_for('data_siswa'))
 
 @app.route('/update_snmptn/<id_data>', methods=['POST'])
+@login_required
 def update_snmptn(id_data):
     if request.method == 'POST':
         id_data = id_data
@@ -229,6 +285,7 @@ def update_snmptn(id_data):
         return redirect(url_for('snmptn'))
 
 @app.route('/update_pkl/<id_data>', methods=['POST'])
+@login_required
 def update_pkl(id_data):
     if request.method == 'POST':
         id_data = id_data
@@ -249,13 +306,17 @@ def update_pkl(id_data):
         return redirect(url_for('data_pkl'))
 
 @app.route('/delete/<id_data>', methods = ['GET'])
+@login_required
 def delete(id_data):
-    flash("Record Has Been Deleted Successfully")
+    flash("Record Has Been Deleted Successfully")    
+    cur.execute("DELETE FROM user_login_data WHERE id=%s", (id_data,))
+    conn.commit()
     cur.execute("DELETE FROM data_siswa WHERE id=%s", (id_data,))
     conn.commit()
     return redirect(url_for('data_siswa'))
 
 @app.route('/delete_snmptn/<id_data>', methods = ['GET'])
+@login_required
 def delete_snmptn(id_data):
     flash("Record Has Been Deleted Successfully")
     cur.execute("DELETE FROM tabel_snmptn WHERE id_snmptn=%s", (id_data,))
@@ -263,6 +324,7 @@ def delete_snmptn(id_data):
     return redirect(url_for('snmptn'))
 
 @app.route('/delete_pkl/<id_data>', methods = ['GET'])
+@login_required
 def delete_pkl(id_data):
     flash("Record Has Been Deleted Successfully")
     cur.execute("DELETE FROM data_pkl_dan_nilai WHERE id_pkl_dan_nilai=%s", (id_data,))
@@ -270,11 +332,13 @@ def delete_pkl(id_data):
     return redirect(url_for('data_pkl'))
 
 @app.route('/tambah_data')
+@login_required
 def tambah_data():
 
     return render_template('tambah_data.html')
     
 @app.route('/tambah_data_snmptn', methods= ['POST', 'GET'])
+@login_required
 def tambah_data_snmptn():
     if request.method == "POST":
         nama_siswa = request.form['nama_siswa']
@@ -290,6 +354,7 @@ def tambah_data_snmptn():
     return render_template('tambah_data_snmptn.html')
 
 @app.route('/tambah_data_pkl', methods= ['POST', 'GET'])
+@login_required
 def tambah_data_pkl():
     if request.method == "POST":
         nama_siswa = request.form['nama_siswa']
@@ -308,25 +373,38 @@ def tambah_data_pkl():
     return render_template('tambah_data_pkl.html')
 
 @app.route('/edit_data/<id_data>', methods = ['POST', 'GET'])
+@login_required
 def edit_data(id_data):
     cur.execute("SELECT * FROM data_siswa WHERE id=%s", (id_data, ))
     data = cur.fetchall()
     return render_template('edit_data.html', datas = data[0])
 
 @app.route('/edit_profil', methods = ['POST', 'GET'])
+@login_required
 def edit_profil():
     id_data = current_user.id
     cur.execute("SELECT * FROM data_siswa WHERE id=%s", (id_data, ))
     data = cur.fetchall()
     return render_template('edit_data.html', datas = data[0])
 
+@app.route('/edit_profil_guru', methods = ['POST', 'GET'])
+@login_required
+def edit_profil_guru():
+    id = current_user.id
+    cur.execute("SELECT * FROM tabel_guru WHERE id_guru=%s", (id, ))
+    data = cur.fetchall()
+    return render_template('edit_data_guru.html', datas = data[0])
+
 @app.route('/edit_data_snmptn/<id_data>', methods = ['POST', 'GET'])
+@login_required
 def edit_data_snmptn(id_data):
     cur.execute("SELECT * FROM tabel_snmptn WHERE id_snmptn=%s", (id_data, ))
     data = cur.fetchall()
     return render_template('edit_data_snmptn.html', datas = data[0])
 
+
 @app.route('/edit_data_pkl/<id_data>', methods = ['POST', 'GET'])
+@login_required
 def edit_data_pkl(id_data):
     cur.execute("SELECT * FROM data_pkl_dan_nilai WHERE id_pkl_dan_nilai=%s", (id_data, ))
     data = cur.fetchall()

@@ -38,3 +38,36 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.btn-default {
+  color: #fff;
+  background-color: #8d82c9;
+  border-color: #ccc;
+}
+
+.btn-default:focus,
+.btn-default.focus {
+  color: #fff;
+  background-color: #786eaf;
+  border-color: #8c8c8c;
+}
+
+.btn-default:hover {
+  color: #fff;
+  background-color: #786eaf;
+  border-color: #adadad;
+}
+
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open > .dropdown-toggle.btn-default:hover,
+.btn-default:active:focus,
+.btn-default.active:focus,
+.open > .dropdown-toggle.btn-default:focus,
+.btn-default:active.focus,
+.btn-default.active.focus,
+.open > .dropdown-toggle.btn-default.focus {
+  color: #fff;
+  background-color: #605892;
+  border-color: #8c8c8c;
+}
