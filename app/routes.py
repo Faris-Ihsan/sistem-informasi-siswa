@@ -60,11 +60,9 @@ def create_akun_siswa(nisn):
     cur.execute("INSERT INTO user_login_data (id, password) VALUES (%s, %s)", (id, password_hash))
     conn.commit()
 
-# konfigurasi database
 conn = psycopg2.connect(host="localhost", database="sistem_informasi_siswa", user="postgres", password="123456")
 cur = conn.cursor()
 
-# Index
 @app.route('/')
 @login_required
 def index():
@@ -72,7 +70,6 @@ def index():
         username = current_user.nama
     return render_template('index.html')
 
-# Login Siswa dan Guru
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -113,22 +110,12 @@ def login_guru():
             return redirect(url_for("index"))
     return render_template('login_guru.html')
 
-# Profil Guru BK
 @app.route('/pengajar')
 @login_required
 def pengajar():
-    cur.execute("SELECT * FROM tabel_guru ORDER BY id_guru")
-    datas = cur.fetchall()    
-    cur.execute("SELECT * FROM bimbingan_kelas_guru ORDER BY id_bimbingan_kelas_guru")
-    bimbingan_kelas_guru_datas = cur.fetchall()
-    cur.execute("SELECT * FROM riwayat_prestasi_guru ORDER BY id_riwayat_prestasi")
-    riwayat_prestasi_guru_datas = cur.fetchall()    
-    cur.execute("SELECT * FROM riwayat_mengajar_guru ORDER BY id_riwayat_mengajar")
-    riwayat_mengajar_guru_datas = cur.fetchall()
     
-    return render_template('pengajar.html', datas=datas, bimbingan_kelas_guru_datas=bimbingan_kelas_guru_datas, riwayat_prestasi_guru_datas=riwayat_prestasi_guru_datas, riwayat_mengajar_guru_datas=riwayat_mengajar_guru_datas)
+    return render_template('pengajar.html')
 
-# Data SNMPTN
 @app.route('/snmptn')
 @login_required
 def snmptn():
@@ -137,7 +124,6 @@ def snmptn():
 
     return render_template('snmptn.html', students = data)
 
-# Data PKL
 @app.route('/data_pkl')
 @login_required
 def data_pkl():
@@ -145,7 +131,6 @@ def data_pkl():
     data = cur.fetchall()
     return render_template('data_pkl.html', students = data)
 
-# Profil Siswa dan Guru
 @app.route('/profil')
 @login_required
 def profil():
